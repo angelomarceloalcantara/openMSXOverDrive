@@ -133,9 +133,40 @@ jobs:
           fi
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
 
+      - name: Empacotar o código-fonte correspondente ao build
+        id: src
+        run: |
+          NAME="${{ steps.pack.outputs.name }}"
+          COMMIT=$(git rev-parse HEAD)
+          mkdir -p dist-src
+          cat > BUILD-INFO.txt <<EOF
+          Repositório : https://github.com/${{ inputs.repo }}
+          Ref         : ${{ inputs.ref }}
+          Commit      : $COMMIT
+          Flavour     : ${{ inputs.flavour }}
+          Alvo        : $TARGET_CPU-$TARGET_OS (cross-compile MinGW-w64)
+          Comandos    : make -f build/main.mk run-3rdparty ... ; make -f build/main.mk bindist ...
+                        (OPENMSX_TARGET_CPU=$TARGET_CPU OPENMSX_TARGET_OS=$TARGET_OS
+                         OPENMSX_FLAVOUR=${{ inputs.flavour }} 3RDPARTY_FLAG=true)
+          Licença     : openMSX é GPL (ver GPL.txt/doc). Este ZIP é o fonte do binário
+                        distribuído junto; as bibliotecas de terceiros são baixadas
+                        pelo próprio build (build/3rdparty.mk) a partir dos sites originais.
+          EOF
+          sed -i 's/^          //' BUILD-INFO.txt
+          git archive --format=zip --prefix="$NAME-src/" -o "dist-src/$NAME-src.zip" HEAD
+          zip -j "dist-src/$NAME-src.zip" BUILD-INFO.txt
+          echo "name=$NAME-src" >> "$GITHUB_OUTPUT"
+
       - name: Publicar o artefato
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.pack.outputs.name }}
           path: dist/*.zip
+          if-no-files-found: error
+
+      - name: Publicar o código-fonte
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.src.outputs.name }}
+          path: dist-src/*.zip
           if-no-files-found: error
