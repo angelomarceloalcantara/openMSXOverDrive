@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<!DOCTYPE msxconfig SYSTEM 'msxconfig2.dtd'>
+<msxconfig>
+  <info>
+    <name>OverDrive</name>
+    <manufacturer>OverDrive</manufacturer>
+    <code/>
+    <release_year/>
+    <description>OverDrive forwards every IN/OUT on its 4 I/O ports (device, subdevice, data, command) to an external virtual-device server over TCP or UDP. Wire format: [port]['R' or 'W'][byte].</description>
+    <type>pluggable</type>
+  </info>
+  <devices>
+    <OverDrive id="OverDrive">
+      <io base="0x60" num="4"/>
+      <protocol>tcp</protocol>
+      <host>127.0.0.1</host>
+      <port>5000</port>
+      <timeout>200</timeout>
+    </OverDrive>
+  </devices>
+</msxconfig>

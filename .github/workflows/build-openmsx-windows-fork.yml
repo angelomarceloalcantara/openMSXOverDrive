@@ -3,8 +3,8 @@
 # em Linux, o mesmo método que a equipe do openMSX usa no GitHub Actions).
 #
 # Uso: Actions > "openMSX Windows (fork)" > Run workflow, e informe:
-#   repo : repositório do fork          (padrão: alexmoncks/openMSX)
-#   ref  : branch, tag ou commit        (padrão: msx2pp)
+#   repo : repositório do fork          (padrão: angelomarceloalcantara/openMSXOverDrive)
+#   ref  : branch, tag ou commit        (padrão: main)
 #
 # Outros forks úteis:  maxiwamoto/openMSX @ rom-dev-2026.10.28  (V9968 + Makoto)
 #                      buppu3/openMSX                           (origem do V9968)
@@ -19,11 +19,11 @@ on:
       repo:
         description: "Repositório do fork (dono/nome)"
         required: true
-        default: "alexmoncks/openMSX"
+        default: "angelomarceloalcantara/openMSXOverDrive"
       ref:
         description: "Branch, tag ou commit"
         required: true
-        default: "msx2pp"
+        default: "main"
       flavour:
         description: "Flavour do build (opt = otimizado)"
         required: true
